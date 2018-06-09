@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>movies & series</title>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+ <style>
+    body{
+    	background-color: grey;
+    }
+ 	#main{
+ 		width:100%;
+ 		
+ 		font-size: 80px;
+ 		text-align: center;
+ 		background-color: #000;
+ 		color:white;
+ 		border-bottom: 24px solid black;
+ 		margin-bottom: 20px;
+
+ 	}
+ 	h1{
+ 		margin-bottom: 10px;
+ 		
+ 	}
+ 	#display{
+ 		display: flex;
+ 		flex-wrap: wrap;
+ 		margin-left: 10px;
+ 		
+
+ 	}
+  #cola{
+  	margin-left: 10px;
+  	margin-bottom: 10px;
+  }
+ </style>
+</head>
+<body>
+ 
+  <div class="container" id="main">
+   <h1>Movies and Series </h1>
+<div class="input-group ">
+  <input type="text" class="form-control" placeholder="Enter Movie or Series name"   id="text">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary btn-lg" type="button" id="button">  Search  </button>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="display"></div>
+  <script>
+  	
+  		
+	document.getElementById("button").addEventListener('click',terminator);
+    
+    function terminator(){
+      var value=document.getElementById("text").value;
+      
+   
+      var ajax= new XMLHttpRequest();
+      ajax.onreadystatechange = function(){
+        if(this.readyState== 4  && this.status==200){
+          
+                 var user = JSON.parse(ajax.responseText);
+                 console.log(user.Search[0].title);
+                 document.getElementById("display").innerHTML=user.Search[0].title;
+               var output='';
+               for(var i=0;i<9;i++){
+               output+=`
+							 
+				<a href="tushar.html?imdbID=`+user.Search[i].imdbID+`&img=`+user.Search[i].Poster+`">
+                        <div class="col-md-3 "id="cola" >
+
+                         <div class="card" style="width: 18rem;">
+  <img class="card-img-top" onclick=myfun(`+user.Search[i].imdbID+`)  src=`+user.Search[i].Poster+` alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">`+user.Search[i].Title+`</p>
+  </div>
+</div>
+               
+                        </div>
+                </a>
+                        `;
+                
+            }
+            document.getElementById("display").innerHTML=output;
+
+        }
+      };
+      ajax.open("GET","http://www.omdbapi.com/?s="+value+"&apikey=413203c7",true);
+      ajax.send();
+       document.getElementById("text").value="";
+       output='';
+     
+      
+    }
+
+    function myfun(i){
+      console.log("redirected");
+       
+      //  http://www.omdbapi.com/?i=`+user.Search[i].imdbID+`&apikey=413203c7
+      console.log(i);
+    }
+  </script>
+</body>
+</html>

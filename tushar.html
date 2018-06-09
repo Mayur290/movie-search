@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Details</title>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<style >
+  #result{
+    text-align: center;
+    color:  #5c5c5b;
+    background-color: #373538;
+    width: 100%;
+    height:100px;
+    font-size: 50px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+  }
+  body{
+    background-color: #b0aaad;
+  }
+
+</style>
+</head>
+<body>
+    
+  
+   <h1> <div id=result> </div></h1>
+    <div id="result2"></div>
+    <div id="helo"></div>
+
+    <script>
+    var url = window.location.search;
+    var cmplt =  window.location.href;
+    url = url.replace("?imdbID=", ''); 
+
+    function _get(parameter , URL) {
+    var reg = new RegExp( '[?&]' + parameter + '=([^&#]*)', 'i' );
+    var string = reg.exec(URL);
+    return string ? string[1] : undefined;
+};
+    
+     console.log(_get("img",cmplt));
+        var ajax= new XMLHttpRequest();
+      ajax.onreadystatechange = function(){
+        if(this.readyState== 4  && this.status==200){
+             var user = JSON.parse(ajax.responseText);
+                 
+                 document.getElementById('result').innerHTML= user.Title;
+                 console.log("url is "+url);
+                 var lucky='';
+
+                  lucky+=`
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4">
+                      <img src=`+_get("img",cmplt)+` alt="Generic placeholder image">
+                  </div>
+                  <div class="col-md-8">
+                     <ul class="list-group">
+                       <li class="list-group-item bg-secondary text-white"><strong><strong>Genre:   </strong></strong>`+user.Genre+`</li>
+                       <li class="list-group-item bg-secondary text-white">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item "><strong>Type:   </strong>`+user.Type+`</li>
+                                    <li class="list-inline-item "><strong>Language:   </strong>`+user.Language+`</li>
+                               </ul>
+
+                       </li>
+                        <li class="list-group-item bg-secondary text-white">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item "><strong>Year:   </strong>`+user.Year+`</li>
+                                    <li class="list-inline-item "><strong>Run time:   </strong>`+user.runtime+`</li>
+                               </ul>
+
+                       </li>
+                        <li class="list-group-item bg-secondary text-white"><strong>Plot:   </strong>`+user.Plot+`</li>
+                          <li class="list-group-item bg-secondary text-white">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item "><strong>Country:   </strong>`+user.Country+`</li>
+                                    <li class="list-inline-item "><strong>director:   </strong>`+user.Director+`</li>
+                               </ul>
+
+                       </li>
+                         <li class="list-group-item bg-secondary text-white"><strong>Actors:   </strong>`+user.Actors+`</li>
+                       
+                     </ul>
+                     <br>
+                         <a href=`+user.Website+` class="btn btn-primary btn-lg" role="button">Visit Site</a>
+                        
+  
+                   </div>
+                </div>
+              </div>  
+        `;
+          
+
+         document.getElementById("helo").innerHTML= lucky;
+
+        }
+      };
+      
+      ajax.open("GET","http://www.omdbapi.com/?i="+url+"&apikey=413203c7",true);
+      ajax.send();
+       
+     
+ </script>
+</body>
+</html>
