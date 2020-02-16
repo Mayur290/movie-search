@@ -7,4 +7,4 @@
 * ajax
 
 **api used**
-[omdbapi](www.omdbapi.com/)
+[omdbapi](http://www.omdbapi.com/)
